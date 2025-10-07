@@ -7,6 +7,7 @@ namespace Setono\SyliusTermsPlugin\DependencyInjection;
 use ReflectionClass;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -31,21 +32,18 @@ final class SetonoSyliusTermsExtension extends AbstractResourceExtension impleme
             $config['forms'][$form]['label'] = $label;
         }
 
-        $container->setParameter('setono_sylius_terms.forms', $config['forms']);
-        $container->setParameter('setono_sylius_terms.terms_path', $config['routing']['terms']);
-
         $loader->load('services.xml');
-
-        $this->registerResources(
-            'setono_sylius_terms',
-            SyliusResourceBundle::DRIVER_DOCTRINE_ORM,
-            $config['resources'],
-            $container,
-        );
     }
 
     public function prepend(ContainerBuilder $container): void
     {
+        $config = $this->getCurrentConfiguration($container);
+
+        $container->setParameter('setono_sylius_terms.forms', $config['forms']);
+        $container->setParameter('setono_sylius_terms.terms_path', $config['routing']['terms']);
+
+        $this->registerResources('setono_sylius_terms', SyliusResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
+
         $container->prependExtensionConfig('sylius_grid', [
             'grids' => [
                 'setono_sylius_terms_terms' => [
@@ -102,5 +100,15 @@ final class SetonoSyliusTermsExtension extends AbstractResourceExtension impleme
                 ],
             ],
         ]);
+    }
+
+    /** @return array<array-key, mixed> */
+    private function getCurrentConfiguration(ContainerBuilder $container): array
+    {
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->getConfiguration([], $container);
+        $configs = $container->getExtensionConfig($this->getAlias());
+
+        return $this->processConfiguration($configuration, $configs);
     }
 }
