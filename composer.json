@@ -45,6 +45,7 @@
         "psalm/plugin-phpunit": "^0.18",
         "setono/code-quality-pack": "^2.7",
         "sylius/sylius": "^1.14",
+        "sylius/test-application": "^1.14.0@alpha",
         "symfony/debug-bundle": "^5.4 || ^6.4 || ^7.0",
         "symfony/dotenv": "^5.4 || ^6.4 || ^7.0",
         "symfony/intl": "^5.4 || ^6.4 || ^7.0",
@@ -62,7 +63,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Setono\\SyliusTermsPlugin\\Tests\\": "tests/"
+            "Setono\\SyliusTermsPlugin\\Tests\\": "tests/",
+            "Tests\\Setono\\SyliusTermsPlugin\\": "tests/TestApplication/src"
         },
         "classmap": [
             "tests/Application/Kernel.php"
@@ -73,7 +75,9 @@
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": true,
-            "symfony/thanks": false
+            "symfony/thanks": false,
+            "symfony/runtime": true,
+            "symfony/flex": true
         },
         "sort-packages": true
     },
@@ -82,5 +86,8 @@
         "check-style": "ecs check",
         "fix-style": "ecs check --fix",
         "phpunit": "phpunit"
+    },
+    "extra": {
+        "public-dir": "vendor/sylius/test-application/public"
     }
 }
