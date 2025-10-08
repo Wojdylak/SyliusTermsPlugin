@@ -65,10 +65,7 @@
         "psr-4": {
             "Setono\\SyliusTermsPlugin\\Tests\\": "tests/",
             "Tests\\Setono\\SyliusTermsPlugin\\": "tests/TestApplication/src"
-        },
-        "classmap": [
-            "tests/Application/Kernel.php"
-        ]
+        }
     },
     "config": {
         "allow-plugins": {
