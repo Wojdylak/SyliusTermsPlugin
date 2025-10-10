@@ -18,26 +18,25 @@ final class SetonoSyliusTermsExtension extends AbstractResourceExtension impleme
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        /**
-         * @psalm-suppress PossiblyNullArgument
-         *
-         * @var array{forms: array<class-string, array{label: string|null}>, routing: array{terms: string}, resources: array} $config
-         */
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-
-        foreach ($config['forms'] as $form => $formConfig) {
-            $reflectionClass = new ReflectionClass($form);
-            $label = $formConfig['label'] ?? sprintf('setono_sylius_terms.form.terms.term_form.%s', u($reflectionClass->getShortName())->snake()->trimSuffix('_type')->toString());
-            $config['forms'][$form]['label'] = $label;
-        }
 
         $loader->load('services.xml');
     }
 
     public function prepend(ContainerBuilder $container): void
     {
+        /**
+         * @psalm-suppress PossiblyNullArgument
+         *
+         * @var array{forms: array<class-string, array{label: string|null}>, routing: array{terms: string}, resources: array} $config
+         */
         $config = $this->getCurrentConfiguration($container);
+
+        foreach ($config['forms'] as $form => $formConfig) {
+            $reflectionClass = new ReflectionClass($form);
+            $label = $formConfig['label'] ?? sprintf('setono_sylius_terms.form.terms.term_form.%s', u($reflectionClass->getShortName())->snake()->trimSuffix('_type')->toString());
+            $config['forms'][$form]['label'] = $label;
+        }
 
         $container->setParameter('setono_sylius_terms.forms', $config['forms']);
         $container->setParameter('setono_sylius_terms.terms_path', $config['routing']['terms']);
