@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    phpVersion="8.1"
+    phpVersion="8.2"
     errorLevel="1"
     findUnusedBaselineEntry="false"
     findUnusedPsalmSuppress="false"
@@ -43,8 +43,14 @@
         <MixedArgument>
             <errorLevel type="suppress">
                 <directory name="src/Fixture"/>
+                <directory name="src/Twig/Component"/>
             </errorLevel>
         </MixedArgument>
+        <MixedArrayAssignment>
+            <errorLevel type="suppress">
+                <directory name="src/Twig/Component"/>
+            </errorLevel>
+        </MixedArrayAssignment>
         <PropertyNotSetInConstructor>
             <errorLevel type="suppress">
                 <directory name="src/Model"/>

@@ -18,7 +18,7 @@ final class SetonoSyliusTermsExtension extends AbstractResourceExtension impleme
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
 
         $loader->load('services.xml');
     }
@@ -65,7 +65,7 @@ final class SetonoSyliusTermsExtension extends AbstractResourceExtension impleme
                             'type' => 'twig',
                             'label' => 'setono_sylius_terms.ui.channels',
                             'options' => [
-                                'template' => '@SetonoSyliusTermsPlugin/admin/grid/field/channels.html.twig',
+                                'template' => '@SyliusAdmin/shared/grid/field/channels.html.twig',
                             ],
                         ],
                     ],
@@ -82,18 +82,6 @@ final class SetonoSyliusTermsExtension extends AbstractResourceExtension impleme
                             'delete' => [
                                 'type' => 'delete',
                             ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-
-        $container->prependExtensionConfig('sylius_ui', [
-            'events' => [
-                'setono_sylius_terms.admin.terms.create.javascripts' => [
-                    'blocks' => [
-                        'javascripts' => [
-                            'template' => '@SetonoSyliusTermsPlugin/admin/terms/_javascripts.html.twig',
                         ],
                     ],
                 ],
